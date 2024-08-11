@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Scanner</title>
+    <style>
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        #reader {
+            width: 600px;
+            margin-bottom: 20px;
+        }
+        #result {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body data-rsssl=1>
+
+    <main>
+        <div id="reader"></div>
+        <div id="result"></div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.4/html5-qrcode.min.js" integrity="sha512-k/KAe4Yff9EUdYI5/IAHlwUswqeipP+Cp5qnrsUjTPCgl51La2/JhyyjNciztD7mWNKLSXci48m7cctATKfLlQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create the QR code scanner object
+            const qrScanner = new Html5QrcodeScanner(
+                'reader',
+                {
+                    fps: 10,
+                    qrbox: { width: 250, height: 250 }
+                },
+                /* verbose= */ false
+            );
+
+            // Start rendering the QR scanner
+            qrScanner.render(onScanSuccess);
+
+            // Callback function when a QR code is successfully scanned
+            function onScanSuccess(qrCodeMessage) {
+                document.getElementById('result').innerHTML = `
+                    <h2>Success!</h2>
+                    <p><a href="${qrCodeMessage}" target="_blank">${qrCodeMessage}</a></p>
+                `;
+                qrScanner.clear(); // Stop the scanner
+            }
+        });
+    </script>
+</body>
+</html>
